@@ -1,0 +1,243 @@
+// prisma/schema.prisma
+// TestCraft MVP Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+// ==================== MODELS ====================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?   // Null for OAuth users
+  image         String?
+  emailVerified DateTime?
+  theme         Theme     @default(LIGHT)
+  role          Role      @default(USER)
+  
+  // Timestamps
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  
+  // Relations
+  accounts      Account[]
+  sessions      Session[]
+  projects      Project[]
+  tests         Test[]
+  testRuns      TestRun[]
+  schedules     Schedule[]
+  
+  @@index([email])
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@index([userId])
+  @@map("sessions")
+}
+
+model Project {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  url         String?  // Base URL for testing
+  
+  // Settings stored as JSON
+  settings    Json     @default("{}")
+  
+  // Metadata
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  tests       Test[]
+  
+  @@index([userId])
+  @@index([slug])
+  @@map("projects")
+}
+
+model Test {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  
+  // Test configuration
+  steps       Json     // Array of test steps with their configurations
+  variables   Json?    // Test-level variables
+  assertions  Json?    // Global assertions for the test
+  
+  // Organization
+  tags        String[]
+  folder      String?  // Folder path for organization
+  
+  // Versioning
+  version     Int      @default(1)
+  isDraft     Boolean  @default(false)
+  
+  // Metadata
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  lastRunAt   DateTime?
+  
+  // Relations
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs        TestRun[]
+  schedules   Schedule[]
+  
+  @@index([projectId])
+  @@index([userId])
+  @@index([tags])
+  @@map("tests")
+}
+
+model TestRun {
+  id          String    @id @default(cuid())
+  
+  // Execution details
+  status      RunStatus @default(QUEUED)
+  trigger     Trigger   @default(MANUAL)
+  
+  // Timing
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+  duration    Int?      // Duration in milliseconds
+  
+  // Results
+  passed      Int       @default(0)
+  failed      Int       @default(0)
+  skipped     Int       @default(0)
+  
+  // Details
+  error       String?   @db.Text
+  logs        Json?     // Array of log entries
+  screenshots Json?     // Array of screenshot URLs
+  report      Json?     // Detailed test report
+  
+  // Browser info
+  browser     String?   // chrome, firefox, safari, edge
+  viewport    String?   // e.g., "1920x1080"
+  
+  // Relations
+  testId      String
+  test        Test      @relation(fields: [testId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scheduleId  String?
+  schedule    Schedule? @relation(fields: [scheduleId], references: [id], onDelete: SetNull)
+  
+  @@index([testId])
+  @@index([userId])
+  @@index([status])
+  @@index([startedAt])
+  @@map("test_runs")
+}
+
+model Schedule {
+  id          String    @id @default(cuid())
+  name        String
+  description String?
+  
+  // Schedule configuration
+  cron        String    // Cron expression (e.g., "0 0 * * *" for daily)
+  timezone    String    @default("UTC")
+  
+  // Status
+  enabled     Boolean   @default(true)
+  lastRunAt   DateTime?
+  nextRunAt   DateTime?
+  
+  // Notification settings
+  notifyEmail Boolean   @default(false)
+  notifySlack Boolean   @default(false)
+  
+  // Metadata
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  // Relations
+  testId      String
+  test        Test      @relation(fields: [testId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  runs        TestRun[]
+  
+  @@index([testId])
+  @@index([userId])
+  @@index([enabled])
+  @@index([nextRunAt])
+  @@map("schedules")
+}
+
+// ==================== ENUMS ====================
+
+enum Theme {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum RunStatus {
+  QUEUED
+  RUNNING
+  PASSED
+  FAILED
+  CANCELLED
+  ERROR
+}
+
+enum Trigger {
+  MANUAL
+  SCHEDULED
+  API
+  CI_CD
+}
