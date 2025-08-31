@@ -16,7 +16,7 @@ export function Header({ onMenuClick, showMenu = false }: HeaderProps) {
   const { data: session } = useSession()
 
   return (
-    <header className="glass-header px-6 py-4">
+    <header className="sticky top-0 z-30 bg-gray-900/95 backdrop-blur-md border-b border-gray-800 px-6 py-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4 flex-1">
           {showMenu && (
@@ -30,11 +30,10 @@ export function Header({ onMenuClick, showMenu = false }: HeaderProps) {
           )}
           
           <div className="relative max-w-md flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <GlassInput
               type="search"
               placeholder="Search tests, projects..."
-              className="pl-10"
+              icon={<Search className="h-4 w-4" />}
             />
           </div>
         </div>

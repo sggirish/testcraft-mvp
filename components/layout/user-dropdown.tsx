@@ -39,7 +39,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 glass-button px-3 py-2"
+        className="flex items-center space-x-2 px-3 py-2 bg-gray-800 hover:bg-gray-700 rounded-lg transition-all"
       >
         {user.image ? (
           <img 
@@ -48,24 +48,24 @@ export function UserDropdown({ user }: UserDropdownProps) {
             className="h-6 w-6 rounded-full"
           />
         ) : (
-          <UserCircle className="h-6 w-6" />
+          <UserCircle className="h-6 w-6 text-gray-400" />
         )}
-        <span className="hidden sm:block text-sm">{user.name || user.email}</span>
-        <ChevronDown className="h-4 w-4" />
+        <span className="hidden sm:block text-sm text-gray-200">{user.name || user.email}</span>
+        <ChevronDown className="h-4 w-4 text-gray-400" />
       </button>
 
       {isOpen && (
         <div className="absolute right-0 mt-2 w-56 z-50">
-          <GlassCard className="p-2">
-            <div className="px-3 py-2 border-b border-border">
-              <p className="text-sm font-medium">{user.name}</p>
-              <p className="text-xs text-muted-foreground">{user.email}</p>
+          <GlassCard className="p-2" variant="dark">
+            <div className="px-3 py-2 border-b border-gray-800">
+              <p className="text-sm font-medium text-white">{user.name}</p>
+              <p className="text-xs text-gray-400">{user.email}</p>
             </div>
             
             <div className="py-1">
               <Link
                 href="/settings/profile"
-                className="flex items-center space-x-2 px-3 py-2 text-sm hover:bg-foreground/5 rounded-lg"
+                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg"
                 onClick={() => setIsOpen(false)}
               >
                 <User className="h-4 w-4" />
@@ -74,7 +74,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
               
               <Link
                 href="/settings"
-                className="flex items-center space-x-2 px-3 py-2 text-sm hover:bg-foreground/5 rounded-lg"
+                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg"
                 onClick={() => setIsOpen(false)}
               >
                 <Settings className="h-4 w-4" />
@@ -83,7 +83,7 @@ export function UserDropdown({ user }: UserDropdownProps) {
               
               <button
                 onClick={() => signOut()}
-                className="flex items-center space-x-2 px-3 py-2 text-sm hover:bg-foreground/5 rounded-lg w-full text-left"
+                className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg w-full text-left"
               >
                 <LogOut className="h-4 w-4" />
                 <span>Logout</span>

@@ -4,12 +4,13 @@ import { cn } from '@/lib/utils'
 import { HTMLAttributes, forwardRef } from 'react'
 
 interface GlassCardProps extends HTMLAttributes<HTMLDivElement> {
-  variant?: 'default' | 'hover' | 'interactive'
+  variant?: 'default' | 'hover' | 'gradient' | 'dark'
   blur?: 'sm' | 'md' | 'lg' | 'xl'
+  noPadding?: boolean
 }
 
 export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
-  ({ className, variant = 'default', blur = 'md', children, ...props }, ref) => {
+  ({ className, variant = 'default', blur = 'xl', noPadding = false, children, ...props }, ref) => {
     const blurClasses = {
       sm: 'backdrop-blur-sm',
       md: 'backdrop-blur-md',
@@ -18,17 +19,20 @@ export const GlassCard = forwardRef<HTMLDivElement, GlassCardProps>(
     }
 
     const variantClasses = {
-      default: 'glass-card',
-      hover: 'glass-card hover:scale-[1.02] transition-transform duration-300',
-      interactive: 'glass-card cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-transform duration-300',
+      default: 'bg-gray-900/50 border border-gray-800',
+      hover: 'bg-gray-900/50 border border-gray-800 hover:bg-gray-900/70 hover:border-gray-700 transition-all duration-300',
+      gradient: 'bg-gradient-to-br from-purple-900/20 to-pink-900/20 border border-purple-800/30',
+      dark: 'bg-black/50 border border-gray-800'
     }
 
     return (
       <div
         ref={ref}
         className={cn(
-          variantClasses[variant],
+          'rounded-xl',
           blurClasses[blur],
+          variantClasses[variant],
+          !noPadding && 'p-6',
           className
         )}
         {...props}

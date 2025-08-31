@@ -49,14 +49,16 @@ export function GlassModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
-        className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-fade-in"
+        className="absolute inset-0 bg-black/80 backdrop-blur-sm"
         onClick={closeOnOverlayClick ? onClose : undefined}
       />
       
       <div
         ref={modalRef}
         className={cn(
-          'glass-modal relative w-full max-w-lg animate-scale-in',
+          'relative bg-gray-900/95 backdrop-blur-xl border border-gray-800',
+          'rounded-xl shadow-2xl max-w-lg w-full p-6',
+          'animate-fade-in',
           className
         )}
       >
@@ -64,9 +66,9 @@ export function GlassModal({
           <div className="flex items-center justify-between mb-4">
             {title && (
               <div>
-                <h2 className="text-xl font-semibold">{title}</h2>
+                <h2 className="text-xl font-semibold text-white">{title}</h2>
                 {description && (
-                  <p className="text-sm text-muted-foreground mt-1">
+                  <p className="text-sm text-gray-400 mt-1">
                     {description}
                   </p>
                 )}

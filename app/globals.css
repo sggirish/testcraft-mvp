@@ -1,4 +1,4 @@
-/* app/globals.css */
+/* app/globals.css - Dark Theme Optimized */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 @tailwind base;
 @tailwind components;
@@ -7,336 +7,77 @@
 /* ========== CSS Variables ========== */
 @layer base {
   :root {
-    /* Light Mode Colors */
-    --background: 0 0% 100%;
-    --foreground: 0 0% 0%;
+    /* Dark Theme (Default) */
+    --background: 0 0% 2%; /* Nearly black */
+    --foreground: 0 0% 98%; /* Nearly white */
     
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 0%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 98%;
     
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 0%;
+    --primary: 280 60% 60%; /* Purple */
+    --primary-foreground: 0 0% 98%;
     
-    --primary: 0 0% 0%;
-    --primary-foreground: 0 0% 100%;
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 0 0% 98%;
     
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 0%;
-    
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
-    
-    --accent: 0 0% 96%;
-    --accent-foreground: 0 0% 0%;
-    
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 0 0% 0%;
-    
-    --radius: 0.5rem;
-    
-    /* Glass Effect Variables */
-    --glass-bg: rgba(255, 255, 255, 0.1);
-    --glass-border: rgba(255, 255, 255, 0.2);
-    --glass-shadow: rgba(0, 0, 0, 0.08);
-    --glass-hover: rgba(255, 255, 255, 0.15);
-    --glass-active: rgba(255, 255, 255, 0.05);
-  }
-  
-  .dark {
-    /* Dark Mode Colors */
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 100%;
-    
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 100%;
-    
-    --primary: 0 0% 100%;
-    --primary-foreground: 0 0% 0%;
-    
-    --secondary: 0 0% 10%;
-    --secondary-foreground: 0 0% 100%;
-    
-    --muted: 0 0% 10%;
+    --muted: 0 0% 15%;
     --muted-foreground: 0 0% 60%;
     
-    --accent: 0 0% 10%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 280 60% 60%;
+    --accent-foreground: 0 0% 98%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
     
     --border: 0 0% 15%;
     --input: 0 0% 15%;
-    --ring: 0 0% 100%;
+    --ring: 280 60% 60%; /* Purple */
     
-    /* Glass Effect Variables - Dark */
-    --glass-bg: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --glass-shadow: rgba(255, 255, 255, 0.02);
-    --glass-hover: rgba(255, 255, 255, 0.08);
-    --glass-active: rgba(255, 255, 255, 0.02);
+    /* Glass Effect Variables */
+    --glass-bg: rgba(31, 41, 55, 0.5); /* gray-800 with opacity */
+    --glass-border: rgba(75, 85, 99, 0.3); /* gray-600 with opacity */
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
-}
-
-/* ========== Base Styles ========== */
-@layer base {
+  
   * {
     @apply border-border;
   }
   
   body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-gray-950 text-gray-100;
+    font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
   
   /* Custom scrollbar */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 10px;
+    height: 10px;
   }
   
   ::-webkit-scrollbar-track {
-    @apply bg-transparent;
+    @apply bg-gray-900;
   }
   
   ::-webkit-scrollbar-thumb {
-    @apply bg-muted rounded-full;
+    @apply bg-gray-700 rounded-lg;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-muted-foreground/30;
-  }
-}
-
-/* ========== Glassmorphism Components ========== */
-@layer components {
-  /* Glass Card */
-  .glass-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    box-shadow: 0 8px 32px 0 var(--glass-shadow);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .glass-card:hover {
-    background: var(--glass-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 12px 40px 0 var(--glass-shadow);
-  }
-  
-  /* Glass Button */
-  .glass-button {
-    @apply relative overflow-hidden;
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    border-radius: 12px;
-    padding: 10px 20px;
-    font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .glass-button:hover {
-    background: var(--glass-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px 0 var(--glass-shadow);
-  }
-  
-  .glass-button:active {
-    background: var(--glass-active);
-    transform: translateY(0);
-  }
-  
-  /* Glass Input */
-  .glass-input {
-    background: var(--glass-bg);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    border-radius: 8px;
-    padding: 10px 16px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    @apply outline-none;
-  }
-  
-  .glass-input:focus {
-    border-color: var(--ring);
-    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
-  }
-  
-  .dark .glass-input:focus {
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.05);
-  }
-  
-  /* Glass Modal */
-  .glass-modal {
-    background: var(--glass-bg);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--glass-border);
-    border-radius: 20px;
-    box-shadow: 0 20px 60px 0 var(--glass-shadow);
-  }
-  
-  /* Glass Sidebar */
-  .glass-sidebar {
-    background: var(--glass-bg);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-right: 1px solid var(--glass-border);
-    height: 100vh;
-  }
-  
-  /* Glass Header */
-  .glass-header {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--glass-border);
-    position: sticky;
-    top: 0;
-    z-index: 40;
-  }
-  
-  /* Glass Badge */
-  .glass-badge {
-    background: var(--glass-bg);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid var(--glass-border);
-    border-radius: 9999px;
-    padding: 4px 12px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-  
-  /* Glass Tooltip */
-  .glass-tooltip {
-    background: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 6px;
-    padding: 6px 12px;
-    font-size: 12px;
-    color: white;
-  }
-  
-  .dark .glass-tooltip {
-    background: rgba(255, 255, 255, 0.9);
-    color: black;
-    border: 1px solid rgba(0, 0, 0, 0.1);
+    @apply bg-gray-600;
   }
 }
 
 /* ========== Animations ========== */
-@layer utilities {
-  /* Fade animations */
-  .animate-fade-in {
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  .animate-fade-out {
-    animation: fadeOut 0.5s ease-in-out;
-  }
-  
-  /* Slide animations */
-  .animate-slide-up {
-    animation: slideUp 0.3s ease-out;
-  }
-  
-  .animate-slide-down {
-    animation: slideDown 0.3s ease-out;
-  }
-  
-  .animate-slide-left {
-    animation: slideLeft 0.3s ease-out;
-  }
-  
-  .animate-slide-right {
-    animation: slideRight 0.3s ease-out;
-  }
-  
-  /* Scale animations */
-  .animate-scale-in {
-    animation: scaleIn 0.2s ease-out;
-  }
-  
-  .animate-scale-out {
-    animation: scaleOut 0.2s ease-out;
-  }
-  
-  /* Pulse animation */
-  .animate-pulse-slow {
-    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-  
-  /* Shimmer loading effect */
-  .shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.1),
-      transparent
-    );
-    background-size: 200% 100%;
-    animation: shimmer 2s linear infinite;
-  }
-  
-  .dark .shimmer {
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.05),
-      transparent
-    );
-    background-size: 200% 100%;
-  }
-}
-
-/* ========== Keyframes ========== */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes fadeOut {
-  from { opacity: 1; }
-  to { opacity: 0; }
-}
-
-@keyframes slideUp {
-  from {
-    transform: translateY(10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideDown {
-  from {
-    transform: translateY(-10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
 @keyframes slideLeft {
   from {
-    transform: translateX(10px);
+    transform: translateX(20px);
     opacity: 0;
   }
   to {
@@ -345,37 +86,14 @@
   }
 }
 
-@keyframes slideRight {
-  from {
-    transform: translateX(-10px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-@keyframes scaleIn {
-  from {
-    transform: scale(0.95);
-    opacity: 0;
-  }
-  to {
-    transform: scale(1);
-    opacity: 1;
-  }
-}
-
-@keyframes scaleOut {
-  from {
-    transform: scale(1);
-    opacity: 1;
-  }
-  to {
-    transform: scale(0.95);
-    opacity: 0;
-  }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 
 @keyframes shimmer {
@@ -383,22 +101,97 @@
   100% { background-position: 200% 0; }
 }
 
-/* ========== React Flow Overrides ========== */
-.react-flow__node {
-  @apply glass-card;
-}
-
-.react-flow__edge-path {
-  @apply stroke-current;
-}
-
-.react-flow__controls {
-  @apply glass-card;
-  button {
-    @apply glass-button;
+/* Blob animation for backgrounds */
+@keyframes blob {
+  0% {
+    transform: translate(0px, 0px) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+  100% {
+    transform: translate(0px, 0px) scale(1);
   }
 }
 
+/* Animation classes */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-left {
+  animation: slideLeft 0.3s ease-out;
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+/* ========== React Flow Overrides ========== */
+.react-flow__node {
+  @apply font-sans;
+}
+
+.react-flow__handle {
+  width: 8px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 2px solid rgba(255, 255, 255, 0.8);
+}
+
+.react-flow__edge-path {
+  stroke: rgba(255, 255, 255, 0.5);
+  stroke-width: 2;
+}
+
+.react-flow__controls {
+  @apply bg-gray-900 border-gray-800;
+}
+
+.react-flow__controls button {
+  @apply bg-gray-800 border-gray-700 text-gray-400 hover:bg-gray-700 hover:text-gray-200;
+}
+
 .react-flow__minimap {
-  @apply glass-card;
+  @apply bg-gray-900 border-gray-800;
+}
+
+/* Focus styles */
+*:focus {
+  @apply outline-none ring-2 ring-purple-600/50 ring-offset-2 ring-offset-gray-950;
+}
+
+/* Button focus override */
+button:focus {
+  @apply ring-offset-0;
 }

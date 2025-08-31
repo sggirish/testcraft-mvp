@@ -5,13 +5,11 @@ import { cn } from '@/lib/utils'
 interface GlassSkeletonProps {
   className?: string
   variant?: 'text' | 'rectangular' | 'circular'
-  animation?: 'pulse' | 'shimmer'
 }
 
 export function GlassSkeleton({
   className,
   variant = 'rectangular',
-  animation = 'shimmer',
 }: GlassSkeletonProps) {
   const variantClasses = {
     text: 'h-4 rounded',
@@ -19,16 +17,11 @@ export function GlassSkeleton({
     circular: 'rounded-full',
   }
 
-  const animationClasses = {
-    pulse: 'animate-pulse bg-muted',
-    shimmer: 'shimmer bg-muted',
-  }
-
   return (
     <div
       className={cn(
+        'animate-pulse bg-gray-800/50 backdrop-blur-md',
         variantClasses[variant],
-        animationClasses[animation],
         className
       )}
     />

@@ -11,43 +11,60 @@ import { CreateProjectModal } from '@/components/projects/create-project-modal'
 import { EditProjectModal } from '@/components/projects/edit-project-modal'
 import { DeleteProjectModal } from '@/components/projects/delete-project-modal'
 import { useProjects } from '@/hooks/use-projects'
-import { useModal } from '@/hooks/use-modal'
 import { formatDate } from '@/lib/utils'
 
 export default function ProjectsPage() {
   const router = useRouter()
   const { projects, loading, fetchProjects } = useProjects()
-  const { openModal, closeModal, isOpen } = useModal()
   const [selectedProject, setSelectedProject] = useState<any>(null)
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null)
+  
+  // Modal states
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
 
   useEffect(() => {
     fetchProjects()
   }, [])
 
-  const handleEdit = (project: any) => {
+  const handleEdit = (project: any, e: React.MouseEvent) => {
+    e.stopPropagation()
     setSelectedProject(project)
-    openModal('edit-project')
+    setIsEditModalOpen(true)
     setDropdownOpen(null)
   }
 
-  const handleDelete = (project: any) => {
+  const handleDelete = (project: any, e: React.MouseEvent) => {
+    e.stopPropagation()
     setSelectedProject(project)
-    openModal('delete-project')
+    setIsDeleteModalOpen(true)
     setDropdownOpen(null)
   }
+
+  const toggleDropdown = (projectId: string, e: React.MouseEvent) => {
+    e.stopPropagation()
+    setDropdownOpen(dropdownOpen === projectId ? null : projectId)
+  }
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => setDropdownOpen(null)
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [])
 
   return (
     <div className="space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold">Projects</h1>
-          <p className="text-muted-foreground mt-2">
+          <h1 className="text-3xl font-bold text-white">Projects</h1>
+          <p className="text-gray-400 mt-2">
             Manage your testing projects
           </p>
         </div>
-        <GlassButton onClick={() => openModal('create-project')}>
+        <GlassButton onClick={() => setIsCreateModalOpen(true)} variant="primary">
           <Plus className="h-4 w-4 mr-2" />
           New Project
         </GlassButton>
@@ -64,12 +81,12 @@ export default function ProjectsPage() {
           // Empty state
           <div className="col-span-full">
             <GlassCard className="p-12 text-center">
-              <Folder className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-              <h3 className="text-lg font-semibold mb-2">No projects yet</h3>
-              <p className="text-muted-foreground mb-4">
+              <Folder className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+              <h3 className="text-lg font-semibold text-white mb-2">No projects yet</h3>
+              <p className="text-gray-400 mb-4">
                 Create your first project to start testing
               </p>
-              <GlassButton onClick={() => openModal('create-project')}>
+              <GlassButton onClick={() => setIsCreateModalOpen(true)} variant="primary">
                 <Plus className="h-4 w-4 mr-2" />
                 Create Project
               </GlassButton>
@@ -89,33 +106,24 @@ export default function ProjectsPage() {
                   <GlassButton
                     variant="ghost"
                     size="icon"
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      setDropdownOpen(dropdownOpen === project.id ? null : project.id)
-                    }}
+                    onClick={(e) => toggleDropdown(project.id, e)}
                   >
                     <MoreVertical className="h-4 w-4" />
                   </GlassButton>
                   
                   {dropdownOpen === project.id && (
                     <div className="absolute right-0 mt-2 w-48 z-10">
-                      <GlassCard className="p-1">
+                      <GlassCard className="p-1" variant="dark">
                         <button
-                          className="flex items-center space-x-2 px-3 py-2 text-sm hover:bg-foreground/5 rounded-lg w-full text-left"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleEdit(project)
-                          }}
+                          className="flex items-center space-x-2 px-3 py-2 text-sm text-gray-300 hover:bg-gray-800 rounded-lg w-full text-left"
+                          onClick={(e) => handleEdit(project, e)}
                         >
                           <Edit className="h-4 w-4" />
                           <span>Edit</span>
                         </button>
                         <button
-                          className="flex items-center space-x-2 px-3 py-2 text-sm hover:bg-foreground/5 rounded-lg w-full text-left text-red-500"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            handleDelete(project)
-                          }}
+                          className="flex items-center space-x-2 px-3 py-2 text-sm text-red-400 hover:bg-gray-800 rounded-lg w-full text-left"
+                          onClick={(e) => handleDelete(project, e)}
                         >
                           <Trash2 className="h-4 w-4" />
                           <span>Delete</span>
@@ -128,17 +136,17 @@ export default function ProjectsPage() {
 
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 rounded-lg bg-foreground/10 flex items-center justify-center">
-                    <Folder className="h-6 w-6" />
+                  <div className="w-10 h-10 rounded-lg bg-purple-900/20 flex items-center justify-center">
+                    <Folder className="h-6 w-6 text-purple-400" />
                   </div>
                   <div>
-                    <h3 className="font-semibold">{project.name}</h3>
+                    <h3 className="font-semibold text-white">{project.name}</h3>
                     {project.url && (
                       <a
                         href={project.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-sm text-muted-foreground hover:underline flex items-center"
+                        className="text-sm text-gray-400 hover:text-purple-400 flex items-center"
                         onClick={(e) => e.stopPropagation()}
                       >
                         {new URL(project.url).hostname}
@@ -150,14 +158,14 @@ export default function ProjectsPage() {
               </div>
 
               {project.description && (
-                <p className="text-sm text-muted-foreground mb-4 line-clamp-2">
+                <p className="text-sm text-gray-400 mb-4 line-clamp-2">
                   {project.description}
                 </p>
               )}
 
               <div className="flex items-center justify-between">
                 <GlassBadge>{project._count?.tests || 0} tests</GlassBadge>
-                <span className="text-xs text-muted-foreground">
+                <span className="text-xs text-gray-500">
                   {formatDate(project.createdAt)}
                 </span>
               </div>
@@ -168,21 +176,21 @@ export default function ProjectsPage() {
 
       {/* Modals */}
       <CreateProjectModal
-        isOpen={isOpen('create-project')}
-        onClose={() => closeModal('create-project')}
+        isOpen={isCreateModalOpen}
+        onClose={() => setIsCreateModalOpen(false)}
       />
       
       {selectedProject && (
         <>
           <EditProjectModal
-            isOpen={isOpen('edit-project')}
-            onClose={() => closeModal('edit-project')}
+            isOpen={isEditModalOpen}
+            onClose={() => setIsEditModalOpen(false)}
             project={selectedProject}
           />
           
           <DeleteProjectModal
-            isOpen={isOpen('delete-project')}
-            onClose={() => closeModal('delete-project')}
+            isOpen={isDeleteModalOpen}
+            onClose={() => setIsDeleteModalOpen(false)}
             project={selectedProject}
           />
         </>

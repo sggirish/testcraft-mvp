@@ -15,7 +15,6 @@ import {
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { signOut } from 'next-auth/react'
-import { GlassButton } from '@/components/ui/glass-button'
 
 const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -33,36 +32,49 @@ const bottomNavigation = [
 
 export function Sidebar() {
   const pathname = usePathname()
+  
+  // Function to check if the current path matches or starts with the nav item's href
+  const isActive = (href: string) => {
+    if (href === '/dashboard') {
+      return pathname === '/dashboard'
+    }
+    // For other pages, check if pathname starts with the href
+    // This handles both /projects and /projects/[id]
+    return pathname === href || pathname.startsWith(`${href}/`)
+  }
 
   return (
-    <div className="fixed left-0 top-0 h-full w-64 glass-sidebar">
-      <div className="flex flex-col h-full p-6">
+    <div className="fixed left-0 top-0 h-full w-64 bg-gray-900 border-r border-gray-800">
+      <div className="flex flex-col h-full p-4">
         {/* Logo */}
         <div className="mb-8">
           <Link href="/dashboard" className="flex items-center space-x-2">
-            <div className="w-10 h-10 rounded-lg bg-foreground/10 flex items-center justify-center">
-              <TestTube2 className="h-6 w-6" />
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-600 to-pink-600 flex items-center justify-center">
+              <TestTube2 className="h-6 w-6 text-white" />
             </div>
-            <span className="text-xl font-bold">TestCraft</span>
+            <span className="text-xl font-bold text-white">TestCraft</span>
           </Link>
         </div>
 
         {/* Main Navigation */}
         <nav className="flex-1 space-y-1">
           {navigation.map((item) => {
-            const isActive = pathname === item.href
+            const active = isActive(item.href)
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 className={cn(
                   'flex items-center space-x-3 px-3 py-2 rounded-lg transition-all',
-                  isActive
-                    ? 'bg-foreground/10 text-foreground'
-                    : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'
+                  active
+                    ? 'bg-purple-900/30 text-purple-400 border border-purple-800/50'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
                 )}
               >
-                <item.icon className="h-5 w-5" />
+                <item.icon className={cn(
+                  "h-5 w-5",
+                  active ? "text-purple-400" : "text-gray-400"
+                )} />
                 <span>{item.name}</span>
               </Link>
             )
@@ -70,18 +82,18 @@ export function Sidebar() {
         </nav>
 
         {/* Bottom Navigation */}
-        <div className="border-t border-border pt-4 space-y-1">
+        <div className="border-t border-gray-800 pt-4 space-y-1">
           {bottomNavigation.map((item) => {
-            const isActive = pathname === item.href
+            const active = isActive(item.href)
             return (
               <Link
                 key={item.name}
                 href={item.href}
                 className={cn(
                   'flex items-center space-x-3 px-3 py-2 rounded-lg transition-all',
-                  isActive
-                    ? 'bg-foreground/10 text-foreground'
-                    : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'
+                  active
+                    ? 'bg-gray-800 text-white'
+                    : 'text-gray-400 hover:bg-gray-800 hover:text-gray-200'
                 )}
               >
                 <item.icon className="h-5 w-5" />
@@ -92,7 +104,7 @@ export function Sidebar() {
           
           <button
             onClick={() => signOut()}
-            className="flex items-center space-x-3 px-3 py-2 rounded-lg transition-all text-muted-foreground hover:bg-foreground/5 hover:text-foreground w-full"
+            className="flex items-center space-x-3 px-3 py-2 rounded-lg transition-all text-gray-400 hover:bg-gray-800 hover:text-gray-200 w-full"
           >
             <LogOut className="h-5 w-5" />
             <span>Logout</span>

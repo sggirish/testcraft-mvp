@@ -33,8 +33,8 @@ export default function DashboardLayout({
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin" />
+      <div className="min-h-screen bg-gray-950 flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-purple-600" />
       </div>
     )
   }
@@ -44,7 +44,7 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white to-gray-100 dark:from-black dark:to-gray-900">
+    <div className="min-h-screen bg-gray-950 text-white">
       {/* Desktop Sidebar */}
       {!isMobile && <Sidebar />}
       
@@ -62,7 +62,7 @@ export default function DashboardLayout({
           onMenuClick={() => setSidebarOpen(true)}
           showMenu={isMobile}
         />
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-6 bg-gray-950">
           {children}
         </main>
       </div>

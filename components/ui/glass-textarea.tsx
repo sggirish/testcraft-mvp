@@ -13,8 +13,11 @@ export const GlassTextarea = forwardRef<HTMLTextAreaElement, GlassTextareaProps>
       <textarea
         ref={ref}
         className={cn(
-          'glass-input w-full min-h-[100px] resize-y',
-          error && 'border-red-500 focus:border-red-500',
+          'w-full px-3 py-2 bg-gray-900/50 border border-gray-800',
+          'rounded-lg text-gray-200 placeholder-gray-500',
+          'focus:outline-none focus:ring-2 focus:ring-purple-600/50 focus:border-transparent',
+          'backdrop-blur-md transition-all resize-none',
+          error && 'border-red-500 focus:ring-red-500/50',
           className
         )}
         {...props}

@@ -64,47 +64,45 @@ export function CreateProjectModal({ isOpen, onClose }: CreateProjectModalProps)
     >
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <div>
-          <label className="text-sm font-medium">Project Name</label>
+          <label className="text-sm font-medium text-gray-300">Project Name</label>
           <GlassInput
             {...register('name')}
             placeholder="My Awesome Project"
-            error={!!errors.name}
             disabled={isLoading}
             className="mt-1"
           />
           {errors.name && (
-            <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
+            <p className="text-sm text-red-400 mt-1">{errors.name.message}</p>
           )}
         </div>
 
         <div>
-          <label className="text-sm font-medium">Description (Optional)</label>
+          <label className="text-sm font-medium text-gray-300">Description (Optional)</label>
           <GlassTextarea
             {...register('description')}
             placeholder="Describe your project..."
-            error={!!errors.description}
             disabled={isLoading}
             className="mt-1"
+            rows={3}
           />
           {errors.description && (
-            <p className="text-sm text-red-500 mt-1">
+            <p className="text-sm text-red-400 mt-1">
               {errors.description.message}
             </p>
           )}
         </div>
 
         <div>
-          <label className="text-sm font-medium">Base URL (Optional)</label>
+          <label className="text-sm font-medium text-gray-300">Base URL (Optional)</label>
           <GlassInput
             {...register('url')}
             type="url"
             placeholder="https://example.com"
-            error={!!errors.url}
             disabled={isLoading}
             className="mt-1"
           />
           {errors.url && (
-            <p className="text-sm text-red-500 mt-1">{errors.url.message}</p>
+            <p className="text-sm text-red-400 mt-1">{errors.url.message}</p>
           )}
         </div>
 
@@ -117,7 +115,7 @@ export function CreateProjectModal({ isOpen, onClose }: CreateProjectModalProps)
           >
             Cancel
           </GlassButton>
-          <GlassButton type="submit" loading={isLoading}>
+          <GlassButton type="submit" variant="primary" loading={isLoading}>
             Create Project
           </GlassButton>
         </div>
