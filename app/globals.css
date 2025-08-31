@@ -195,3 +195,131 @@
 button:focus {
   @apply ring-offset-0;
 }
+
+/* ========== React Flow Custom Styles ========== */
+.react-flow__renderer {
+  background: transparent !important;
+}
+
+.react-flow__node {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Custom handle styles */
+.react-flow__handle {
+  width: 8px !important;
+  height: 8px !important;
+  background: #4b5563 !important;
+  border: 1.5px solid #6b7280 !important;
+  transition: all 0.2s ease;
+}
+
+.react-flow__handle:hover {
+  background: #9333ea !important;
+  border-color: #a855f7 !important;
+  transform: scale(1.2);
+}
+
+.react-flow__handle-connecting {
+  background: #10b981 !important;
+  border-color: #34d399 !important;
+}
+
+.react-flow__handle-valid {
+  background: #10b981 !important;
+  border-color: #34d399 !important;
+}
+
+/* Custom edge styles */
+.react-flow__edge-path {
+  stroke: #4b5563 !important;
+  stroke-width: 2 !important;
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: #9333ea !important;
+  stroke-width: 3 !important;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: #6b7280 !important;
+}
+
+/* Connection line while dragging */
+.react-flow__connection {
+  stroke: #9333ea !important;
+  stroke-width: 2 !important;
+}
+
+.react-flow__connection-path {
+  stroke: #9333ea !important;
+  stroke-dasharray: 5 5 !important;
+  animation: dash 0.5s linear infinite !important;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -10;
+  }
+}
+
+/* Controls customization */
+.react-flow__controls {
+  background: rgba(17, 24, 39, 0.95) !important;
+  border: 1px solid rgba(55, 65, 81, 0.5) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3) !important;
+}
+
+.react-flow__controls-button {
+  background: rgba(31, 41, 55, 0.8) !important;
+  border: 1px solid rgba(75, 85, 99, 0.3) !important;
+  color: #9ca3af !important;
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 6px !important;
+  margin: 2px !important;
+  transition: all 0.2s ease !important;
+}
+
+.react-flow__controls-button:hover {
+  background: rgba(55, 65, 81, 0.9) !important;
+  color: #e5e7eb !important;
+  transform: scale(1.05);
+}
+
+.react-flow__controls-button svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+/* Minimap customization */
+.react-flow__minimap {
+  background: rgba(17, 24, 39, 0.95) !important;
+  border: 1px solid rgba(55, 65, 81, 0.5) !important;
+  border-radius: 12px !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.react-flow__minimap-mask {
+  fill: rgba(147, 51, 234, 0.15) !important;
+  stroke: rgba(147, 51, 234, 0.5) !important;
+  stroke-width: 2 !important;
+}
+
+/* Selection box */
+.react-flow__selection {
+  background: rgba(147, 51, 234, 0.08) !important;
+  border: 1px solid rgba(147, 51, 234, 0.4) !important;
+}
+
+/* Attribution (hide it) */
+.react-flow__attribution {
+  display: none !important;
+}
+
+/* Node selection */
+.react-flow__node.selected {
+  outline: none !important;
+}

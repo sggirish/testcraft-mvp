@@ -30,6 +30,11 @@ export async function GET(request: NextRequest) {
             slug: true,
           },
         },
+        _count: {
+          select: {
+            runs: true,
+          },
+        },
       },
     })
 
@@ -53,14 +58,48 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, description, steps, connections, projectId } = body
+    const { 
+      name, 
+      description, 
+      projectId,
+      steps,
+      variables,
+      tags 
+    } = body
+
+    // Validate required fields
+    if (!name || !steps || !Array.isArray(steps)) {
+      return NextResponse.json(
+        { error: 'Invalid test data' },
+        { status: 400 }
+      )
+    }
+
+    // Get default project if not specified
+    let finalProjectId = projectId
+    if (!finalProjectId) {
+      const defaultProject = await prisma.project.findFirst({
+        where: { userId: session.user.id },
+        orderBy: { createdAt: 'asc' },
+      })
+      finalProjectId = defaultProject?.id
+    }
+
+    if (!finalProjectId) {
+      return NextResponse.json(
+        { error: 'No project found' },
+        { status: 400 }
+      )
+    }
 
     const test = await prisma.test.create({
       data: {
         name,
         description,
-        steps: steps || [],
-        projectId,
+        steps: steps, // JSON field
+        variables: variables || {},
+        tags: tags || [],
+        projectId: finalProjectId,
         userId: session.user.id,
       },
     })

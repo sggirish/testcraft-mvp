@@ -1,4 +1,4 @@
-// app/(dashboard)/builder/page.tsx
+// app/(dashboard)/builder/[id]/page.tsx
 'use client'
 
 import dynamic from 'next/dynamic'
@@ -20,7 +20,7 @@ const TestBuilder = dynamic(
   }
 )
 
-export default function BuilderPage() {
+export default function EditTestPage() {
   // Remove all padding and make it full height within the dashboard layout
   return (
     <div className="h-[calc(100vh-5rem)] -m-6 relative">

@@ -1,3 +1,4 @@
+// hooks/use-theme.ts
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -5,7 +6,7 @@ import { useEffect, useState } from 'react'
 type Theme = 'light' | 'dark'
 
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>('light')
+  const [theme, setTheme] = useState<Theme>('dark')
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -16,15 +17,19 @@ export function useTheme() {
     
     if (savedTheme) {
       setTheme(savedTheme)
-      document.documentElement.classList.toggle('dark', savedTheme === 'dark')
+      if (savedTheme === 'dark') {
+        document.documentElement.classList.add('dark')
+        document.documentElement.style.setProperty('--background', '0 0% 2%')
+        document.documentElement.style.setProperty('--foreground', '0 0% 98%')
+      } else {
+        document.documentElement.classList.remove('dark')
+        document.documentElement.style.setProperty('--background', '0 0% 98%')
+        document.documentElement.style.setProperty('--foreground', '0 0% 2%')
+      }
     } else {
-      // Check system preference
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
-      
-      setTheme(systemTheme)
-      document.documentElement.classList.toggle('dark', systemTheme === 'dark')
+      // Default to dark theme
+      setTheme('dark')
+      document.documentElement.classList.add('dark')
     }
   }, [])
 
@@ -32,18 +37,36 @@ export function useTheme() {
     const newTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
-    document.documentElement.classList.toggle('dark', newTheme === 'dark')
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+      document.documentElement.style.setProperty('--background', '0 0% 2%')
+      document.documentElement.style.setProperty('--foreground', '0 0% 98%')
+    } else {
+      document.documentElement.classList.remove('dark')
+      document.documentElement.style.setProperty('--background', '0 0% 98%')
+      document.documentElement.style.setProperty('--foreground', '0 0% 2%')
+    }
   }
 
   const setThemeMode = (newTheme: Theme) => {
     setTheme(newTheme)
     localStorage.setItem('theme', newTheme)
-    document.documentElement.classList.toggle('dark', newTheme === 'dark')
+    
+    if (newTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+      document.documentElement.style.setProperty('--background', '0 0% 2%')
+      document.documentElement.style.setProperty('--foreground', '0 0% 98%')
+    } else {
+      document.documentElement.classList.remove('dark')
+      document.documentElement.style.setProperty('--background', '0 0% 98%')
+      document.documentElement.style.setProperty('--foreground', '0 0% 2%')
+    }
   }
 
   // Prevent flash of incorrect theme
   if (!mounted) {
-    return { theme: 'light' as Theme, toggleTheme: () => {}, setThemeMode: () => {} }
+    return { theme: 'dark' as Theme, toggleTheme: () => {}, setThemeMode: () => {} }
   }
 
   return { theme, toggleTheme, setThemeMode }
