@@ -1,6 +1,5 @@
-import type { Config } from 'tailwindcss'
-
-const config: Config = {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   darkMode: 'class',
   content: [
     './pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -47,10 +46,10 @@ const config: Config = {
         'slide-right': 'slideRight 0.3s ease-out',
         'scale-in': 'scaleIn 0.2s ease-out',
         'scale-out': 'scaleOut 0.2s ease-out',
-        'spin': 'spin 1s linear infinite',
-        'pulse': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        spin: 'spin 1s linear infinite',
+        pulse: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-        'shimmer': 'shimmer 2s linear infinite',
+        shimmer: 'shimmer 2s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -105,5 +104,3 @@ const config: Config = {
   },
   plugins: [],
 }
-
-export default config
